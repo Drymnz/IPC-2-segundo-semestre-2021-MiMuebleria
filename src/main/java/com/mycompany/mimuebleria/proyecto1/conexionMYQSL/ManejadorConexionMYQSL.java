@@ -15,26 +15,36 @@ import java.sql.SQLException;
  */
 public class ManejadorConexionMYQSL {
 
-    private final String usuario = "muebleadmin";
-    private final String usuarioPassword = "Password123@";
-    private final String URL = "JDBC:MYSQL://LOCALHOST:3306/mimuebleria;";
+    private final static String usuario = "muebleadmin";
+    private final static String usuarioPassword = "Password123@";
+    private final static String URL = "jdbc:mysql://localhost:3306/mimuebleria";
     public static Connection conexion;
 
-    public ManejadorConexionMYQSL() {
-        try {
-            conexion = DriverManager.getConnection(URL, usuario, usuarioPassword);
-        } catch (SQLException e) {
-            
-        } finally {
+    public ManejadorConexionMYQSL(boolean inicarConexionMYQSL) {
+        if (inicarConexionMYQSL) {
             try {
-                if (conexion != null) {
-                    conexion.close();
-                }
+                iniciarConexion();
             } catch (SQLException e) {
-                
+                e.printStackTrace();
+                System.out.println(e.getErrorCode());
             }
-
         }
+    }
+
+    // inicar y cerrar la conecxion manual
+    public void iniciarConexion() throws SQLException {
+        conexion = DriverManager.getConnection(URL, usuario, usuarioPassword);
+    }
+
+    public void cerrarConexion() throws SQLException {
+        if (conexion != null) {
+            conexion.close();
+        }
+    }
+    // fin inicar y  cerrar la conecxion manual
+
+    public Connection getConexion() {
+        return conexion;
     }
 
 }

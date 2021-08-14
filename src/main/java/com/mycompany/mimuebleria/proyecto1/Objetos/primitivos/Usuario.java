@@ -10,15 +10,19 @@ package com.mycompany.mimuebleria.proyecto1.Objetos.primitivos;
  * @author drymnz
  */
 public class Usuario {
-        private String nombre;
+
+    private String nombre;
     private String password;
+    private int tipo;
     // constructor
-    public Usuario(String nombre, String password) {
+
+    public Usuario(String nombre, String password, int tipo) {
         this.nombre = nombre;
         this.password = password;
+        this.tipo = tipo;
     }
-    //fin constructor
 
+    //fin constructor
     // get y set
     public String getNombre() {
         return nombre;
@@ -35,5 +39,14 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
     // fin get y set
+
 }

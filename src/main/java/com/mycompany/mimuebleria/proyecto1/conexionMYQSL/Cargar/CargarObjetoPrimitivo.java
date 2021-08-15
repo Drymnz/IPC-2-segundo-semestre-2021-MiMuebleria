@@ -6,7 +6,6 @@
 package com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Cargar;
 
 import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.*;
-import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,12 +16,12 @@ import java.sql.SQLException;
  */
 public class CargarObjetoPrimitivo {
 
-    private Connection coneccion;
+    private Connection conexion;
     private PreparedStatement ingresar;
 
     // constructor 
     public CargarObjetoPrimitivo(Connection coneccion) {
-        this.coneccion = coneccion;
+        this.conexion = coneccion;
     }
 
     // fin constructor 
@@ -54,21 +53,21 @@ public class CargarObjetoPrimitivo {
 
     //fin ingresar al mysql
     private boolean ingresarMueble(Mueble cargar) throws SQLException {
-        ingresar = coneccion.prepareStatement("INSERT INTO mueble VALUES (?,?)");
+        ingresar = conexion.prepareStatement("INSERT INTO mueble VALUES (?,?)");
         ingresar.setString(1, cargar.getNombre());
         ingresar.setFloat(2, cargar.getPrecio());
         return ingresar.executeUpdate() == 1;
     }
 
     private boolean ingresarPieza(Pieza cargar) throws SQLException {
-        ingresar = coneccion.prepareStatement("INSERT INTO pieza VALUES (?,?)");
+        ingresar = conexion.prepareStatement("INSERT INTO pieza VALUES (?,?)");
         ingresar.setString(1, cargar.getTipo());
         ingresar.setFloat(2, cargar.getCosto());
         return ingresar.executeUpdate() == 1;
     }
     
     private boolean ingresarUsuario(Usuario cargar) throws SQLException {
-        ingresar = coneccion.prepareStatement("INSERT INTO usuario VALUES (?,?,?)");
+        ingresar = conexion.prepareStatement("INSERT INTO usuario VALUES (?,?,?)");
         ingresar.setString(1, cargar.getNombre());
         ingresar.setString(2, cargar.getPassword());
         ingresar.setInt(3, cargar.getTipo());

@@ -5,20 +5,25 @@
  */
 package com.mycompany.mimuebleria.proyecto1;
 
-import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.*;
-import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Cargar.CargarObjetoPrimitivo;
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.BuscadorExistencialPK;
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ManejadorConexionMYQSL;
+import java.sql.SQLException;
 
 /**
  *
  * @author drymnz
  */
 public class CLASSPRUEVAS {
-    
+
     public static void main(String[] args) {
-        ManejadorConexionMYQSL s = new ManejadorConexionMYQSL(true);
-        CargarObjetoPrimitivo p = new CargarObjetoPrimitivo(s.getConexion());
-        Usuario prue = new Usuario("benjamin", "123456", 0);
-        p.cargar(prue);
+        //(new ManejadorConexionMYQSL(true)).getConexion()
+        try {
+            System.out.println("1.." + new BuscadorExistencialPK(new ManejadorConexionMYQSL(true).getConexion()).
+                    tablaPKInt(
+                    1, ListadoTabla.factura));
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

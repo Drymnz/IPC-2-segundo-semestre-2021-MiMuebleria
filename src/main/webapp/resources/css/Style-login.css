@@ -1,0 +1,75 @@
+/*
+    Created on : 19/08/2021, 09:23:54
+    Author     : drymnz
+*/
+* {
+  margin: 0;
+  padding: 0;
+  border: 0; }
+
+body {
+  background-color: #F9EAC9; }
+
+#logotipo, footer {
+  background-color: #3F0A00;
+  color: #F8F8FF;
+  padding: 20px;
+  color: #E8D1A7; }
+
+h2 {
+  text-align: center; }
+
+.izquierdaFormulario, #imagenDerecha {
+  width: 50%;
+  float: left; }
+
+input {
+  display: block;
+  margin: 25px 5%;
+  padding: 25px 0;
+  width: 90%;
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5); }
+
+input[type="submit"] {
+  background: #D0CE7C;
+  opacity: 0.8;
+  cursor: pointer; }
+
+input[type="submit"]:hover {
+  opacity: 0.95; }
+
+input[type="password"]:focus {
+  text-align: center; }
+
+input[type="submit"]:active {
+  transform: scale(0.95); }
+
+#imagenDerecha {
+  height: 400px;
+  background: url(../picture/imagenDerecha.jpg) right no-repeat;
+  background-size: cover; }
+
+footer {
+  clear: both; }
+
+#footer-content {
+  text-align: center; }
+
+label {
+  margin: 2% 5%; }
+
+@media (max-width: 768px) {
+  label, h1, h2, h3 {
+    font-size: 60px;
+    height: 50px; }
+
+  .izquierdaFormulario {
+    width: 100%; }
+
+  #imagenDerecha {
+    height: 0; } }
+@media (max-width: 480px) {
+  h2, label {
+    font-size: 100px; } }
+
+/*# sourceMappingURL=Style-login.css.map */

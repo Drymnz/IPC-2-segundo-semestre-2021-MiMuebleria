@@ -1,0 +1,103 @@
+/* 
+    Created on : 21/08/2021, 14:18:32
+    Author     : drymnz
+*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    min-height: 100vh;
+}
+/*estructura del menu box*/
+.menu{
+    position: fixed;
+    top:20px;
+    left: 20px;
+    bottom: 20px;
+    width: 10%;
+    border-radius: 10px;
+    box-sizing: initial;
+    border-left: 5px solid black;
+    background: aqua;/*color del menu*/
+    transition: width 0.5s;
+    overflow-x: hidden;
+}
+.menu.action{
+    width: 23%;
+}
+/*manejo de la individual*/
+.menu ul{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 5px;
+    padding-top: 40px;
+}
+/* */
+.menu ul li{
+    position: relative;
+    list-style: none;
+    width: 100%;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+.menu ul li.listado{
+    background: white;
+}
+.menu ul li a{
+    position: relative;
+    display: block;
+    width: 100%;
+    display:flex;
+    text-decoration: none;
+    color: black;
+}
+.menu ul li a .icono{
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.menu ul li a .titulo{
+    position: relative;
+    display: block;
+    height: 60px;
+    padding-left: 10px;
+    line-height: 60px;
+    white-space: normal;
+}
+.toggle{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #F9EAC9;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.toggle.action{
+    background: #3F0A00;
+}
+.toggle ion-icon{
+    position: absolute;
+    color: #F8F8FF;
+    font-size: 40px;
+    display: none;
+}
+.toggle ion-icon.open {
+    display: block;
+}
+.toggle.action ion-icon.open {
+    display: block;
+}

@@ -1,0 +1,4 @@
+/src/main/webapp/resources/.sass-cache/
+*.css.map
+*.scss
+/src/main/webapp/resources/scss/

@@ -12,6 +12,7 @@
         <title>login</title>
         <link rel="icon" type="imagen/x-icon" href="resources/picture/logoIcon.icon">
         <link href="resources/css/Style-login.css" rel="stylesheet" type="text/css"/>
+        <script> document.getElementsByClassName("usuario").innerHTML = localStorage.getItem("usuario");</script>
     </head>
     <body>
         <header>
@@ -20,13 +21,13 @@
         </header>
         <main id="cuerpo">
             <div class="izquierdaFormulario">
-                <form id="formulario" >
+                <form method="POST" id="formulario" action="resources/jsp/ConexionJSP">
                     <h2>Login</h2>
                     <label for="Usuario">Usuario</label>
-                    <input type="text" id="nombre" placeholder="&#128100">
+                    <input type="text"  placeholder="&#128100" name="usuario">
                     <label for="Contraseña">Contraseña</label>
-                    <input type="password" required minlength="6" maxlength="6" id="Contraseña" placeholder="&#128272;">
-                    <input type="submit" value="Ingresar">
+                    <input type="password" name="password" required minlength="6" maxlength="6" placeholder="&#128272;">
+                    <input type="submit">
                 </form>   
             </div>
             <div id="imagenDerecha"></div>

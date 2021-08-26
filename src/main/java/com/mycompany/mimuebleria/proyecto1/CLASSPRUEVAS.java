@@ -8,43 +8,57 @@ package com.mycompany.mimuebleria.proyecto1;
 import com.mycompany.mimuebleria.proyecto1.CargarArchivo.CargarObjetosMYQSL;
 import com.mycompany.mimuebleria.proyecto1.CargarArchivo.CargardorMasivo;
 import com.mycompany.mimuebleria.proyecto1.CargarArchivo.OrdenarTexto;
+import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.Usuario;
 import com.mycompany.mimuebleria.proyecto1.VerificadorTexto.VerificadorTexto;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.BuscadorExistencialPK;
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.ListadoFilasTabla;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ManejadorConexionMYQSL;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import static jdk.internal.org.jline.utils.Colors.s;
 
 /**
  *
  * @author drymnz
  */
-public class CLASSPRUEVAS {
+public class CLASSPRUEVAS<T> {
+
+    public static ManejadorConexionMYQSL a = new ManejadorConexionMYQSL(true);
 
     public static void main(String[] args) {
+
+        List<Usuario> listado = new CLASSPRUEVAS().fads();
+        for (Usuario usuario : listado) {
+            System.out.println(usuario.getNombre() + "----" + usuario.getPassword());
+        }
+
         //(new ManejadorConexionMYQSL(true)).getConexion()
-        CargarObjetosMYQSL a = new CargarObjetosMYQSL();
+        /* 
         CargardorMasivo d = new CargardorMasivo("ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "USUARIO(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "MUEBLE(\"clasico\",15)"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_pieza(\"clasico\",15,\"2018/5/24\")"
-                + "USUARIO(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "ENSABLAR_MUEBLE(\"clasico\",15,\"2018/5/24\")"
-                + "pieza(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "PIEZA(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
-                + "");
-        d.cargar();
-        
-        /*System.out.println("los atributos son");
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "USUARIO(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "MUEBLE(\"clasico\",15)"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_pieza(\"clasico\",15,\"2018/5/24\")"
+        + "USUARIO(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "ENSABLAR_MUEBLE(\"clasico\",15,\"2018/5/24\")"
+        + "pieza(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "PIEZA(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "ensablar_mueble(\"clasico\",15,\"2018/5/24\")"
+        + "");
+        d.cargar();*/
+
+ /*System.out.println("los atributos son");
         for (int i = 0; i < b.length; i++) {
         b[i] = b[i].replaceAll("\"", "");
         System.out.println("-------------->" + b[i]);
@@ -52,5 +66,19 @@ public class CLASSPRUEVAS {
         System.out.println("varchar------->" + new VerificadorTexto().verificarVarchar(b[i]));
         System.out.println("date------->" + new VerificadorTexto().verificarDate(b[i]));
         }*/
+    }
+
+    public List<Usuario> fads() {
+        List<Usuario> re = new ArrayList<Usuario>();
+        try {
+            List<T> p = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.usuario);
+            for (T t : p) {
+                re.add((Usuario) t);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return re;
     }
 }

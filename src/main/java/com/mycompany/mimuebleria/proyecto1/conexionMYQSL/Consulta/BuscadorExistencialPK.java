@@ -50,15 +50,13 @@ public class BuscadorExistencialPK<T> {
             resultado = buscar.executeQuery();
             resultado.next();
             if (resultado.getString(columna).equalsIgnoreCase(nombre)) {
-                encontro(verificar);
+                encontro(verificar, this.resultado);
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println(e.getMessage());
 
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println(e.getMessage());
         }
         return false;
@@ -81,7 +79,7 @@ public class BuscadorExistencialPK<T> {
             resultado = buscar.executeQuery();
             resultado.next();
             if (resultado.getInt(columna) == numero) {
-                encontro(verificar);
+                encontro(verificar, this.resultado);
                 return true;
             }
         } catch (SQLException e) {
@@ -94,29 +92,30 @@ public class BuscadorExistencialPK<T> {
         return false;
     }
 
-    private void encontro(ListadoTabla verificar) throws SQLException {
+    public T encontro(ListadoTabla verificar, ResultSet resultadoSET) throws SQLException {
         switch (verificar) {
             case cliente:
                 break;
             case factura:
                 break;
             case mueble:
-                String nombreMueble = resultado.getString("nombre");
-                float precioMueble = resultado.getFloat("precio");
+                String nombreMueble = resultadoSET.getString("nombre");
+                float precioMueble = resultadoSET.getFloat("precio");
                 encontrado = (T) new Mueble(nombreMueble, precioMueble);
                 break;
             case pieza:
-                String tipoPieza = resultado.getString("tipo");
-                float precio = resultado.getFloat("precio");
+                String tipoPieza = resultadoSET.getString("tipo");
+                float precio = resultadoSET.getFloat("precio");
                 encontrado = (T) new Pieza(tipoPieza, precio);
                 break;
             case usuario:
-                String nombre = resultado.getString("nombre");
-                String password = resultado.getString("password");
-                int tipo = resultado.getInt("tipo");
+                String nombre = resultadoSET.getString("nombre");
+                String password = resultadoSET.getString("password");
+                int tipo = resultadoSET.getInt("tipo");
                 encontrado = (T) new Usuario(nombre, password, tipo);
                 break;
         }
+        return encontrado;
     }
 
     // get de lo que obtuvo en la busqueda

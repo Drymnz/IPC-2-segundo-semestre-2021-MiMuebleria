@@ -34,18 +34,22 @@ public class ConexionJSP extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("tenes que liminar unas cosas");
         ManejadorConexionMYQSL coneccion = new ManejadorConexionMYQSL(true);
         BuscadorExistencialPK buscador = new BuscadorExistencialPK(coneccion.getConexion());
         if ((buscador).tablaPKVarchar(request.getParameter("usuario"), ListadoTabla.usuario) && buscador.getEncontrado() != null) {
             Usuario encontre = (Usuario) buscador.getEncontrado();
             if (request.getParameter("password").equals(encontre.getPassword())) {
                 switch (encontre.getTipo()) {
-                    case 0:// administrado
-                        response.sendRedirect("menu-finaciera-administracion.jsp");
+                    case 0:// administrado RECORDAR ELIMINAR ESTO SOLO ES PRUEVAS <--------------------
+                        response.sendRedirect("sub-finaciera-administracion/crear-usuario.jsp");
                         break;
-                    case 1:// taller
+                    case 1:// Fabrica
                         break;
-                    case 2:// ventas
+                    case 2:// Venta
+                        break;
+                    case 3:// Finaciero
+                        response.sendRedirect("sub-finaciera-administracion/crear-usuario.jsp");
                         break;
                     default:
                         response.sendRedirect("../../index.jsp");

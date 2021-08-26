@@ -1,0 +1,51 @@
+/* 
+    Created on : 24/08/2021, 13:02:00
+    Author     : drymnz
+*/
+*{
+    --color-cafe-claro:#F9EAC9;
+    --color-cafe-oscuro:#3F0A00;
+    --color-cafe-oscuro-dos-tabla:#9c6e42;
+}
+.tabla{
+    border-collapse: collapse;
+}
+.tabla td , .tabla th{
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    text-align: center;
+}
+.tabla th{
+    background: var(--color-cafe-oscuro);
+    color: var(--color-cafe-claro);
+}
+.tabla tbody tr:nth-child(even){
+    background-color: var(--color-cafe-oscuro-dos-tabla);
+}
+/*responsive*/
+@media(max-width: 500px){
+    ..tabla thead{
+        display: none;
+    }
+    .tabla , .tabla tbody , .tabla tr, .tabla td{
+        display: block;
+        width: 100%;
+    }
+    .tabla tr{
+        margin-bottom: 15px;
+    }
+    .tabla td{
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .tabla td ::before{
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        padding-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: right;
+    }
+}

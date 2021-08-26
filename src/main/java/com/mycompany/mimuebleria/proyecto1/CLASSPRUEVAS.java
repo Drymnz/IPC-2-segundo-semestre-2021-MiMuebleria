@@ -5,20 +5,13 @@
  */
 package com.mycompany.mimuebleria.proyecto1;
 
-import com.mycompany.mimuebleria.proyecto1.CargarArchivo.CargarObjetosMYQSL;
-import com.mycompany.mimuebleria.proyecto1.CargarArchivo.CargardorMasivo;
-import com.mycompany.mimuebleria.proyecto1.CargarArchivo.OrdenarTexto;
 import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.Usuario;
-import com.mycompany.mimuebleria.proyecto1.VerificadorTexto.VerificadorTexto;
-import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.BuscadorExistencialPK;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.ListadoFilasTabla;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ManejadorConexionMYQSL;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import static jdk.internal.org.jline.utils.Colors.s;
 
 /**
  *
@@ -70,15 +63,10 @@ public class CLASSPRUEVAS<T> {
 
     public List<Usuario> fads() {
         List<Usuario> re = new ArrayList<Usuario>();
-        try {
-            List<T> p = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.usuario);
-            for (T t : p) {
-                re.add((Usuario) t);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        List<T> p = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.usuario);
+        for (T t : p) {
+            re.add((Usuario) t);
         }
-
         return re;
     }
 }

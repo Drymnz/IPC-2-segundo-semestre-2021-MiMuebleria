@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "CrearObjetosP", urlPatterns = {"/resources/jsp/CrearObjetosP"})
 public class CrearObjetosP extends HttpServlet {
 
+    private final ManejadorConexionMYQSL coneccion = new ManejadorConexionMYQSL(true);
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -35,12 +37,9 @@ public class CrearObjetosP extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("estas dentro de aqui8468415");
-        System.out.println("estas dentro de aqui8468415");
-        System.out.println("estas dentro de aqui8468415");
-        ManejadorConexionMYQSL coneccion = new ManejadorConexionMYQSL(true);
-        BuscadorExistencialPK buscador = new BuscadorExistencialPK(coneccion.getConexion());
+
         try {
+            BuscadorExistencialPK buscador = new BuscadorExistencialPK(coneccion.getConexion());
             String nombre = request.getParameter("nombre");
             String password = request.getParameter("password");
             if (!(buscador).tablaPKVarchar(nombre, ListadoTabla.usuario) && buscador.getEncontrado() == null & (!nombre.trim().equals("") && !password.trim().equals(""))) {

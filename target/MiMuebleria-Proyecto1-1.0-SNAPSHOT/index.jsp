@@ -23,7 +23,7 @@
         </header>
         <main id="cuerpo">
             <div class="izquierdaFormulario">
-                <form method="POST" id="formulario" action="resources/jsp/ConexionJSP">
+                <form method="POST" id="formulario" action="ConexionJSP">
                     <h2>Login</h2>
                     <label for="Usuario">Usuario</label>
                     <input type="text"  placeholder="&#128100" name="usuario">
@@ -34,6 +34,9 @@
             </div>
             <div id="imagenDerecha"></div>
         </main>
-        <jsp:include page="resources/includes/footer.jsp" />
+        <jsp:include page="resources/includes/footer.jsp" flush="true" />
+        <div class="pruevas">
+            <a href="ConexionJSP?accion=listadoUsuario" >purevas</a>
+        </div>
     </body>
 </html>

@@ -5,8 +5,6 @@
  */
 package com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta;
 
-import com.mycompany.mimuebleria.proyecto1.CargarArchivo.CargarObjetosMYQSL;
-import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.*;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class ListadoFilasTabla<T> {
 
-    private Connection conexion;
+    private final Connection conexion;
     private ResultSet resultado;
     private PreparedStatement buscar;
     //constructor
@@ -39,23 +37,18 @@ public class ListadoFilasTabla<T> {
     }
 
     //fin constructor
-    public List<T> getTablaDB(ListadoTabla cual) throws SQLException {
+    public List getTablaDB(ListadoTabla cual) {
         List<T> listado = new ArrayList<>();
-
         try {
             buscar = conexion.prepareStatement("SELECT * FROM " + cual.getNombre());
             resultado = buscar.executeQuery();
-        } catch (SQLException ex) {
-            Logger.getLogger(ListadoFilasTabla.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        while (resultado.next()) {
-            try {
+            while (resultado.next()) {
                 T a = (T) (new BuscadorExistencialPK(conexion)).encontro(cual, resultado);
                 listado.add(a);
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-                Logger.getLogger(ListadoFilasTabla.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(ListadoFilasTabla.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return listado;

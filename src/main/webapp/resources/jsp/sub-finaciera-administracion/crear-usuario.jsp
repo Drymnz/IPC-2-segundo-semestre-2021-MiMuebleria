@@ -21,7 +21,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-9">
-                    <jsp:include page="../../includes/menu-finaciera-administracion.jsp"/>
+                    <jsp:include page="../../includes/menu-finaciera-administracion.jsp" flush="true"/>
                 </div>
                 <div class="col-sm-9">
                     <div class="row">
@@ -40,9 +40,7 @@
                                 </select>
                                 <input type="submit"  class="btn btn-primary" value="crear">
                             </form> 
-                            <div id="tabla-dercha-usuario row">
-                                <jsp:include page="../../includes/tabla/usuario.jsp"/>
-                            </div> 
+                            <iframe src="../../../ConexionJSP?accion=listadoUsuario"></iframe>
                         </div>
                     </div>
                 </div>

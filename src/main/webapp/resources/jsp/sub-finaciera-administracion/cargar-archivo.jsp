@@ -13,8 +13,6 @@
         <link rel="icon" type="imagen/x-icon" href="../../picture/logoIcon.icon">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <!-- hojas de estilo -->
-        <link href="../../css/bootstrap.css" rel="stylesheet" type="text/css"/>
-        <link href="../../css/sidebars.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <jsp:include page="../../includes/menu-finaciera-administracion.jsp"/>

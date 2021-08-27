@@ -12,11 +12,8 @@ import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.ListadoFilasTa
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ManejadorConexionMYQSL;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ConexionJSP", urlPatterns = {"/ConexionJSP"})
 public class ConexionJSP extends HttpServlet {
 
-    private final ManejadorConexionMYQSL coneccion = new ManejadorConexionMYQSL(true);
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -43,6 +38,8 @@ public class ConexionJSP extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ManejadorConexionMYQSL coneccion = new ManejadorConexionMYQSL(true);
+        System.out.println("request.getContextPath()" + request.getContextPath());
         System.out.println("tenes que liminar unas cosas");
         BuscadorExistencialPK buscador = new BuscadorExistencialPK(coneccion.getConexion());
         if ((buscador).tablaPKVarchar(request.getParameter("usuario"), ListadoTabla.usuario) && buscador.getEncontrado() != null) {
@@ -50,14 +47,15 @@ public class ConexionJSP extends HttpServlet {
             if (request.getParameter("password").equals(encontre.getPassword())) {
                 switch (encontre.getTipo()) {
                     case 0:// administrado RECORDAR ELIMINAR ESTO SOLO ES PRUEVAS <--------------------
-                        response.sendRedirect("resources/jsp/sub-finaciera-administracion/crear-usuario.jsp");
+                        response.sendRedirect("resources/jsp/sub-finaciera-administracion/crear.jsp");
                         break;
                     case 1:// Fabrica
+                        response.sendRedirect("resources/jsp/sub-fabrica/pieza.jsp");
                         break;
                     case 2:// Venta
                         break;
                     case 3:// Finaciero
-                        response.sendRedirect("resources/jsp/sub-finaciera-administracion/crear-usuario.jsp");
+                        response.sendRedirect("resources/jsp/sub-finaciera-administracion/crear.jsp");
                         break;
                     default:
                         response.sendRedirect("../../index.jsp");
@@ -67,18 +65,35 @@ public class ConexionJSP extends HttpServlet {
         } else {
             response.sendRedirect("../../index.jsp");
         }
-        coneccion.cerrarConexion();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String acceso = "";
         String accion = request.getParameter("accion");
-        if (accion.equalsIgnoreCase("listadoUsuario")) {
-            List<Usuario> re = new ArrayList<Usuario>();
-            List<Usuario> p = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.usuario);
-            request.setAttribute("listadoUsuario", p);
-            request.getRequestDispatcher("resources/includes/tabla/usuario.jsp").forward(request, response);
+        if (!accion.trim().equalsIgnoreCase("")) {
+            List<Object> re = new ArrayList<Object>();
+            switch (accion) {
+                case "listadoUsuario":
+                    re = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.usuario);
+                    accion = "usuario";
+                    break;
+                case "listadoPieza":
+                    re = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.pieza);
+                    accion = "pieza";
+                    break;
+                case "listadoMueble":
+                    re = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.mueble);
+                    accion = "mueble";
+                    break;
+            }
+            if (!re.isEmpty()) {
+                request.setAttribute("listado", re);
+                request.setAttribute("nombreListado", accion);
+                request.getRequestDispatcher("resources/includes/tabla.jsp").forward(request, response);
+            }
+
+        } else {
+            response.sendRedirect("../../index.jsp");
         }
         /* RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);*/

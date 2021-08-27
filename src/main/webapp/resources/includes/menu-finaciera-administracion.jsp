@@ -16,8 +16,8 @@
         <ul class="nav nav-pills flex-column mb-auto">
             <!--<!-- elementos de listado de menu -->
             <li class="nav-item">
-                <a href="${pageContext.request.contextPath}/resources/jsp/sub-finaciera-administracion/crear-usuario.jsp" class="nav-link active" aria-current="page">
-                    Crear Usuarios
+                <a href="${pageContext.request.contextPath}/resources/jsp/sub-finaciera-administracion/crear.jsp" class="nav-link active" aria-current="page">
+                    Crear
                 </a>
             </li>
             <li>
@@ -28,7 +28,7 @@
         </ul>
         <hr>
         <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <a href="${pageContext.request.contextPath}/resources/jsp/sub-finaciera-administracion/cargar-archivo.jsp" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                 &#128100;
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">

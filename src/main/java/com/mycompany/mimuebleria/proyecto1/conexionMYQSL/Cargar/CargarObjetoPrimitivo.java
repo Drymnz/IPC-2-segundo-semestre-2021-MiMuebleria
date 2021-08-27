@@ -9,17 +9,27 @@ import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author drymnz
  */
-public class CargarObjetoPrimitivo {
+public class CargarObjetoPrimitivo implements Runnable {
 
     private Connection conexion;
     private PreparedStatement ingresar;
+    private int cantidada;
+    private Pieza cargarPiezas;
 
     // constructor 
+    public CargarObjetoPrimitivo(Connection coneccion, int cantidada, Pieza cargarPiezas) {
+        this.conexion = coneccion;
+        this.cantidada = cantidada;
+        this.cargarPiezas = cargarPiezas;
+    }
+
     public CargarObjetoPrimitivo(Connection coneccion) {
         this.conexion = coneccion;
     }
@@ -60,17 +70,28 @@ public class CargarObjetoPrimitivo {
     }
 
     private boolean ingresarPieza(Pieza cargar) throws SQLException {
-        ingresar = conexion.prepareStatement("INSERT INTO pieza VALUES (?,?)");
+        ingresar = conexion.prepareStatement("INSERT INTO pieza (tipo,precio) VALUES (?,?)");
         ingresar.setString(1, cargar.getTipo());
         ingresar.setFloat(2, cargar.getCosto());
         return ingresar.executeUpdate() == 1;
     }
-    
+
     private boolean ingresarUsuario(Usuario cargar) throws SQLException {
-        ingresar = conexion.prepareStatement("INSERT INTO usuario VALUES (?,?,?)");
+        ingresar = conexion.prepareStatement("INSERT INTO usuario  VALUES (?,?,?)");
         ingresar.setString(1, cargar.getNombre());
         ingresar.setString(2, cargar.getPassword());
         ingresar.setInt(3, cargar.getTipo());
         return ingresar.executeUpdate() == 1;
+    }
+
+    @Override
+    public void run() {
+        try {
+            for (int i = 0; i < cantidada; i++) {
+                boolean funciona = ingresarPieza(this.cargarPiezas);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CargarObjetoPrimitivo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

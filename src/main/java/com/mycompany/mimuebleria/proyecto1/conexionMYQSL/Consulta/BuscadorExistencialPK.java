@@ -54,10 +54,10 @@ public class BuscadorExistencialPK<T> {
                 return true;
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("BuscadorExistencialPK"+e.getMessage());
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("BuscadorExistencialPK"+e.getMessage());
         }
         return false;
     }
@@ -66,6 +66,10 @@ public class BuscadorExistencialPK<T> {
         try {
             String columna = "";
             switch (verificar) {
+                case pieza:
+                    buscar = conexion.prepareStatement("select * from pieza WHERE tipo=?");
+                    columna = "id";
+                    break;
                 case cliente:
                     buscar = conexion.prepareStatement("select * from cliente WHERE id=?");
                     columna = "id";
@@ -84,10 +88,10 @@ public class BuscadorExistencialPK<T> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            System.out.println("BuscadorExistencialPK"+e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
+            System.out.println("BuscadorExistencialPK"+e.getMessage());
         }
         return false;
     }

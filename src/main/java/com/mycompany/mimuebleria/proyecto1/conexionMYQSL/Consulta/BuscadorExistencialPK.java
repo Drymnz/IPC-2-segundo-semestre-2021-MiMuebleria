@@ -67,7 +67,7 @@ public class BuscadorExistencialPK<T> {
             String columna = "";
             switch (verificar) {
                 case pieza:
-                    buscar = conexion.prepareStatement("select * from pieza WHERE tipo=?");
+                    buscar = conexion.prepareStatement("select * from pieza WHERE id=?");
                     columna = "id";
                     break;
                 case cliente:
@@ -108,9 +108,10 @@ public class BuscadorExistencialPK<T> {
                 encontrado = (T) new Mueble(nombreMueble, precioMueble);
                 break;
             case pieza:
+                int idPieza = resultadoSET.getInt("id");
                 String tipoPieza = resultadoSET.getString("tipo");
                 float precio = resultadoSET.getFloat("precio");
-                encontrado = (T) new Pieza(tipoPieza, precio);
+                encontrado = (T) new Pieza(idPieza,tipoPieza, precio);
                 break;
             case usuario:
                 String nombre = resultadoSET.getString("nombre");

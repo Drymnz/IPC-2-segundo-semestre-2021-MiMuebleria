@@ -39,23 +39,21 @@ public class ConexionJSP extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ManejadorConexionMYQSL coneccion = new ManejadorConexionMYQSL(true);
-        System.out.println("request.getContextPath()" + request.getContextPath());
-        System.out.println("tenes que liminar unas cosas");
         BuscadorExistencialPK buscador = new BuscadorExistencialPK(coneccion.getConexion());
         if ((buscador).tablaPKVarchar(request.getParameter("usuario"), ListadoTabla.usuario) && buscador.getEncontrado() != null) {
             Usuario encontre = (Usuario) buscador.getEncontrado();
             if (request.getParameter("password").equals(encontre.getPassword())) {
                 switch (encontre.getTipo()) {
-                    case 0:// administrado RECORDAR ELIMINAR ESTO SOLO ES PRUEVAS <--------------------
-                        response.sendRedirect("resources/jsp/sub-finaciera-administracion/crear.jsp");
-                        break;
                     case 1:// Fabrica
                         response.sendRedirect("resources/jsp/sub-fabrica/pieza.jsp");
                         break;
                     case 2:// Venta
                         break;
                     case 3:// Finaciero
-                        response.sendRedirect("resources/jsp/sub-finaciera-administracion/crear.jsp");
+                        request.getMethod();
+                        request.setAttribute("accion", "listado-una-columna-menu-crear-finaciero");
+                        request.setAttribute("donde", "resources/jsp/sub-finaciera-administracion/crear.jsp");
+                        response.sendRedirect("ConexionJSP?accion=listado-una-columna-menu-crear-finaciero&donde=resources/jsp/sub-finaciera-administracion/crear.jsp");
                         break;
                     default:
                         response.sendRedirect("../../index.jsp");
@@ -63,40 +61,55 @@ public class ConexionJSP extends HttpServlet {
                 }
             }
         } else {
-            response.sendRedirect("../../index.jsp");
+            response.sendRedirect("index.jsp");
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        if (!accion.trim().equalsIgnoreCase("")) {
-            List<Object> re = new ArrayList<Object>();
-            switch (accion) {
-                case "listadoUsuario":
-                    re = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.usuario);
-                    accion = "usuario";
-                    break;
-                case "listadoPieza":
-                    re = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.pieza);
-                    accion = "pieza";
-                    break;
-                case "listadoMueble":
-                    re = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.mueble);
-                    accion = "mueble";
-                    break;
-            }
-            if (!re.isEmpty()) {
-                request.setAttribute("listado", re);
-                request.setAttribute("nombreListado", accion);
-                request.getRequestDispatcher("resources/includes/tabla.jsp").forward(request, response);
-            }
+        try {
+            if (!accion.isEmpty()) {
+                List<Object> ListadoCompleto = new ArrayList<Object>();
+                List<Object> Distinto = new ArrayList<Object>();
+                switch (accion) {
+                    case "listadoUsuario":
+                        ListadoCompleto = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.usuario);
+                        accion = "usuario";
+                        break;
+                    case "listadoPieza":
+                        ListadoCompleto = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.pieza);
+                        accion = "pieza";
+                    case "listadoPiezaYlistado-resumen":
+                        ListadoCompleto = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.pieza);
+                        Distinto = (new ListadoFilasTabla(a.getConexion())).getTablaDistintoDB(ListadoTabla.pieza, "tipo,precio");
+                        accion = "pieza";
+                        request.setAttribute("listado-resumen", Distinto);
+                        break;
+                    case "listadoMueble":
+                        ListadoCompleto = (new ListadoFilasTabla(a.getConexion())).getTablaDB(ListadoTabla.mueble);
+                        accion = "mueble";
+                        break;
+                    case "listado-una-columna-menu-crear-finaciero":
+                        ListadoCompleto = (new ListadoFilasTabla(a.getConexion())).getTablaColumnatoDB(ListadoTabla.mueble, "nombre", false, "nombre");
+                        Distinto = (new ListadoFilasTabla(a.getConexion())).getTablaColumnatoDB(ListadoTabla.pieza, "tipo,precio", true, "tipo");
+                        request.setAttribute("listado-resumen", Distinto);
+                        break;
+                }
+                if (!ListadoCompleto.isEmpty()) {
+                    request.setAttribute("listado", ListadoCompleto);
+                    request.setAttribute("nombreListado", accion);
+                    request.getRequestDispatcher(request.getParameter("donde")).forward(request, response);
+                }
 
-        } else {
-            response.sendRedirect("../../index.jsp");
+            } else {
+                response.sendRedirect("index.jsp");
+            }
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
-        /* RequestDispatcher vista = request.getRequestDispatcher(acceso);
-        vista.forward(request, response);*/
     }
 
 }

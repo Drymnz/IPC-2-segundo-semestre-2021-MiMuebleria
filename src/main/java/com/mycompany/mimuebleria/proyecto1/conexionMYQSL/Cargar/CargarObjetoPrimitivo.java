@@ -91,6 +91,7 @@ public class CargarObjetoPrimitivo implements Runnable {
                 boolean funciona = ingresarPieza(this.cargarPiezas);
             }
         } catch (SQLException ex) {
+            System.out.println("ingresar datos"+ex.getMessage());
             Logger.getLogger(CargarObjetoPrimitivo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

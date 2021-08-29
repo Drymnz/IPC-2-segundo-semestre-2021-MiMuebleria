@@ -23,11 +23,12 @@ public class CLASSPRUEVAS<T> {
 
     public static void main(String[] args) {
 
-        List<Usuario> listado = new CLASSPRUEVAS().fads();
-        for (Usuario usuario : listado) {
-            System.out.println(usuario.getNombre() + "----" + usuario.getPassword());
-        }
-
+        String a = "";
+        System.out.println(a.isEmpty());
+        System.out.println(a.isBlank());
+        a = "affasdafsd";
+        System.out.println(a.isEmpty());
+        System.out.println(a.isBlank());
         //(new ManejadorConexionMYQSL(true)).getConexion()
         /* 
         CargardorMasivo d = new CargardorMasivo("ensablar_mueble(\"clasico\",15,\"2018/5/24\")"

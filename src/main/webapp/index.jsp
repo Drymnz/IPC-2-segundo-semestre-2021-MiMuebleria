@@ -34,7 +34,6 @@
             </div>
             <div id="imagenDerecha"></div>
         </main>
-        <a href="ConexionJSP?accion=listadoPieza">pruevas</a>
         <jsp:include page="resources/includes/footer.jsp" flush="true" />
     </body>
 </html>

@@ -71,13 +71,13 @@ public class CrearObjetosP extends HttpServlet {
             int tipo = -1;
             switch (request.getParameter("tipo")) {
                 case "Fabrica":
-                    tipo = 3;
+                    tipo = 1;
                     break;
                 case "Venta":
                     tipo = 2;
                     break;
                 case "Finaciero":
-                    tipo = 1;
+                    tipo = 3;
                     break;
             }
             if (tipo != -1 && password.length() == 6) {

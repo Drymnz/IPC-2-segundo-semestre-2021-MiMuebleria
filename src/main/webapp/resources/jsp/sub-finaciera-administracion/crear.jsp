@@ -4,7 +4,12 @@
     Author     : drymnz
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.util.List"%>
+<%@page import="com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% List<String> listado = (List<String>) request.getAttribute("listado");%>
+<% List<String> listadoresumen = (List<String>) request.getAttribute("listado-resumen");%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,6 +50,28 @@
                                 <input name="mueble" type="text" class="form-control">
                                 <label for="precio">precio</label>
                                 <input name="precio" type="text" class="form-control" ">
+                                <input type="submit"  class="btn btn-primary" value="crear">
+                            </form> 
+                        </div>
+                        <div class="col-8 col-sm-6">
+                            <form method="POST" class="mb-3 row" action="../CrearObjetosP?accion=mueble">
+                                <h2>Crear ensable piezas</h2>
+                                <label for="nombre">mueble</label>
+                                <select name="tipo-mueble" class="custom-select d-block w-100" id="operation" required>
+                                    <% for (String string : listado) {
+                                            out.println("<option value=\"" + string + "\">" + string + "</option>");
+                                        }
+                                    %>
+                                </select>
+                                <label for="nombre">pieza</label>
+                                <select name="tipo-pieza" class="custom-select d-block w-100" id="operation" required>
+                                    <% for (String string : listadoresumen) {
+                                            out.println("<option value=\"" + string + "\">" + string + "</option>");
+                                        }
+                                    %>
+                                </select>
+                                <label for="precio">cantidad</label>
+                                <input name="cantidad-piezas" type="number" class="form-control" ">
                                 <input type="submit"  class="btn btn-primary" value="crear">
                             </form> 
                         </div>

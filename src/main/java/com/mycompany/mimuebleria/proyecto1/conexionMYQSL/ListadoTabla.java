@@ -11,34 +11,35 @@ package com.mycompany.mimuebleria.proyecto1.conexionMYQSL;
  */
 public enum ListadoTabla {
 
-    cliente("cliente"),
-    detallesFactura("detallesFactura"),
-    devolucion("devolucion"),
-    ensableMueble("ensableMueble"),
-    ensablePieza("ensablePieza"),
-    factura("factura"),
-    materiaPrima("materiaPrima"),
-    mueble("mueble"),
-    pieza("pieza"),
-    salaVenta("salaVenta"),
-    usuario("usuario");
+    cliente("cliente", ""),
+    detallesFactura("detallesFactura", ""),
+    devolucion("devolucion", ""),
+    ensableMueble("ensableMueble", ""),
+    ensablePieza("ensablePieza", ""),
+    factura("factura", ""),
+    mueble("mueble", "nombre"),
+    pieza("pieza", "id"),
+    salaVenta("salaVenta", ""),
+    usuario("usuario", "nombre");
 
     //constructor
     private String nombre;
+    private String pk;
 
-    private ListadoTabla(String nombre) {
+    private ListadoTabla(String nombre, String pk) {
         this.nombre = nombre;
+        this.pk = pk;
     }
 
     //fin constructor
-    // get y set
+    // get
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public String getPk() {
+        return pk;
     }
-    //fin get y set
 
+    //fin get 
 }

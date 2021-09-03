@@ -21,7 +21,7 @@ public class ManejadorConexionMYQSL {
     private final static String usuarioPassword = "Password123@";
     private final static String URL = "jdbc:mysql://localhost:3306/mimuebleria";
     private final static String TOMCAT = "com.mysql.cj.jdbc.Driver";
-    public static Connection conexion;
+    public  Connection conexion;
 
     public ManejadorConexionMYQSL(boolean inicarConexionMYQSL) {
         if (inicarConexionMYQSL) {

@@ -76,6 +76,30 @@ public class ListadoFilasTabla<T> {
     }
 
     // metodo temporar, aun no se si dividir
+    public List getTablaContarDB(ListadoTabla cual, String columna) {
+        List<T> listado = new ArrayList<>();
+        try {
+            buscar = conexion.prepareStatement("SELECT " + columna + ", COUNT(" + columna + ") FROM " + cual.getNombre() + " GROUP BY 1 HAVING COUNT(" + columna + ") > 0");
+            resultado = buscar.executeQuery();
+            while (resultado.next()) {
+                switch (cual) {
+                    case pieza:
+                        String tipoPieza = resultado.getString("tipo");
+                        float precio = resultado.getFloat("COUNT(" + columna + ")");
+                        T a = (T) new Pieza(tipoPieza, precio);
+                        listado.add(a);
+                        break;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(ListadoFilasTabla.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listado;
+    }
+
+    // metodo temporar, aun no se si dividir
     public List getTablaColumnatoDB(ListadoTabla cual, String columnas, boolean distinct, String columnasResturn) {
         List<String> listado = new ArrayList<>();
         String distinctString = (distinct) ? "DISTINCT" : "";

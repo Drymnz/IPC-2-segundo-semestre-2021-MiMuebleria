@@ -43,11 +43,20 @@ public class Modificar extends HttpServlet {
             Ajustar relizar = new Ajustar(coneccion.getConexion());
             boolean fueRealizado = false;
             switch (accion) {
+                case "ventana-all":
+                    String tipoPieza = request.getParameter("modificar");
+                    boolean DESACTIVAR = request.getParameter("all").equals("true");
+                    Pieza mandarAll = new Pieza(tipoPieza, 0);
+                    request.setAttribute("modificar", mandarAll);
+                    request.setAttribute("all", DESACTIVAR);
+                    request.getRequestDispatcher(request.getParameter("donde")).forward(request, response);
+                    break;
                 case "ventana":
                     String idPiezaModificar = request.getParameter("modificar");
                     if (lo.tablaPKInt(Integer.parseInt(idPiezaModificar), ListadoTabla.pieza)) {
                         Pieza mandar = (Pieza) lo.getEncontrado();
                         request.setAttribute("modificar", mandar);
+                        request.setAttribute("all", false);
                         request.getRequestDispatcher(request.getParameter("donde")).forward(request, response);
                     }
                     break;
@@ -86,14 +95,27 @@ public class Modificar extends HttpServlet {
                 case "modificar-pieza":
                     String idPiezaModificar1 = request.getParameter("ajustar");
                     String tipoPiez = request.getParameter("tipo");
-                    int costoPieza = Integer.valueOf(request.getParameter("costo"));
-                    if (lo.tablaPKInt(Integer.parseInt(idPiezaModificar1), ListadoTabla.pieza) && !tipoPiez.isEmpty() && costoPieza > 0) {
-                        Pieza mandar = (Pieza) lo.getEncontrado();
-                        Pieza como = new Pieza(tipoPiez, costoPieza);
-                        fueRealizado = relizar.modificarPK(ListadoTabla.pieza, mandar, como);
+                    int costoPieza = 0;
+                    try {
+                        if (request.getParameter("costo") != null) {
+                            costoPieza = Integer.valueOf(request.getParameter("costo"));
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println(e.getMessage());
                     }
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    if (lo.tablaPKInt(Integer.parseInt(idPiezaModificar1), ListadoTabla.pieza) && !tipoPiez.isEmpty() && costoPieza > 0) {
+                        fueRealizado = relizar.modificarPK(ListadoTabla.pieza, (Pieza) lo.getEncontrado(), new Pieza(tipoPiez, costoPieza));
+                    } else {
+                        if (costoPieza == 0) {
+                            fueRealizado = relizar.modificarALL(ListadoTabla.pieza, (new Pieza(request.getParameter("tipo-antes"), 0)), (new Pieza(tipoPiez, 0)));
+                        }
+                    }
+                    response.sendRedirect("ConexionJSP?accion=listadoPiezaYlistado-resumen&donde=/resources/jsp/sub-fabrica/listado-piezas.jsp");
                     break;
+
+            }
+            if (!fueRealizado) {
+                request.getRequestDispatcher("index.jsp").forward(request, response);
 
             }
         }

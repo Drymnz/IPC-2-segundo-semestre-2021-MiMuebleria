@@ -11,23 +11,24 @@ package com.mycompany.mimuebleria.proyecto1.conexionMYQSL;
  */
 public enum ListadoTabla {
 
-    cliente("cliente", ""),
-    detallesFactura("detallesFactura", ""),
-    devolucion("devolucion", ""),
-    ensableMueble("ensableMueble", ""),
-    ensablePieza("ensablePieza", ""),
-    factura("factura", ""),
-    mueble("mueble", "nombre"),
-    pieza("pieza", "id"),
-    salaVenta("salaVenta", ""),
-    usuario("usuario", "nombre");
+    cliente("cliente", "", "CLIENTE"),
+    detallesFactura("detallesFactura", "", ""),
+    devolucion("devolucion", "", ""),
+    ensableMueble("ensablaMueble", "", "ENSAMBLAR_MUEBLE"),
+    ensablePieza("ensablepieza", "", "ENSAMBLE_PIEZAS"),
+    factura("factura", "", ""),
+    mueble("mueble", "nombre", "MUEBLE"),
+    pieza("pieza", "id", "PIEZA"),
+    usuario("usuario", "nombre", "USUARIO");
 
     //constructor
     private String nombre;
     private String pk;
+    private String palabraClaveCargaArchivo;
 
-    private ListadoTabla(String nombre, String pk) {
+    private ListadoTabla(String nombre, String pk, String palabraClaveCargaArchivo) {
         this.nombre = nombre;
+        this.palabraClaveCargaArchivo = palabraClaveCargaArchivo;
         this.pk = pk;
     }
 
@@ -41,5 +42,9 @@ public enum ListadoTabla {
         return pk;
     }
 
+    public String getPalabraClaveCargaArchivo() {
+        return palabraClaveCargaArchivo;
+    }
     //fin get 
+
 }

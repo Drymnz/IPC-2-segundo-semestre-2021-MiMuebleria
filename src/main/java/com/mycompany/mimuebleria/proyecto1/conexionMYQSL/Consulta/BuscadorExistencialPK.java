@@ -5,6 +5,7 @@
  */
 package com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta;
 
+import com.mycompany.mimuebleria.proyecto1.Objetos.EnsablePiezas;
 import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.*;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import java.sql.Connection;
@@ -54,10 +55,10 @@ public class BuscadorExistencialPK<T> {
                 return true;
             }
         } catch (SQLException e) {
-            System.out.println("BuscadorExistencialPK"+e.getMessage());
+            System.out.println("BuscadorExistencialPK" + e.getMessage());
 
         } catch (Exception e) {
-            System.out.println("BuscadorExistencialPK"+e.getMessage());
+            System.out.println("BuscadorExistencialPK" + e.getMessage());
         }
         return false;
     }
@@ -88,19 +89,22 @@ public class BuscadorExistencialPK<T> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("BuscadorExistencialPK"+e.getMessage());
+            System.out.println("BuscadorExistencialPK" + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("BuscadorExistencialPK"+e.getMessage());
+            System.out.println("BuscadorExistencialPK" + e.getMessage());
         }
         return false;
     }
 
     public T encontro(ListadoTabla verificar, ResultSet resultadoSET) throws SQLException {
         switch (verificar) {
-            case cliente:
-                break;
-            case factura:
+            case ensablePieza:
+                BuscadorExistencialPK buscar = new BuscadorExistencialPK(conexion);
+                Mueble encontradoMueblePieza = (buscar.tablaPKVarchar(resultadoSET.getString("mueble"), ListadoTabla.mueble)) ? ((Mueble) buscar.getEncontrado()) : new Mueble(resultadoSET.getString("mueble"), 0);
+                Pieza piezaEnsablePieza = (buscar.tablaPKVarchar(resultadoSET.getString("pieza"), ListadoTabla.pieza)) ? ((Pieza) buscar.getEncontrado()) : new Pieza(resultadoSET.getString("pieza"), 0);
+                int cantidadPieza = resultadoSET.getInt("cantidad");
+                encontrado = (T) new EnsablePiezas(encontradoMueblePieza, piezaEnsablePieza, cantidadPieza);
                 break;
             case mueble:
                 String nombreMueble = resultadoSET.getString("nombre");
@@ -111,7 +115,7 @@ public class BuscadorExistencialPK<T> {
                 int idPieza = resultadoSET.getInt("id");
                 String tipoPieza = resultadoSET.getString("tipo");
                 float precio = resultadoSET.getFloat("precio");
-                encontrado = (T) new Pieza(idPieza,tipoPieza, precio);
+                encontrado = (T) new Pieza(idPieza, tipoPieza, precio);
                 break;
             case usuario:
                 String nombre = resultadoSET.getString("nombre");

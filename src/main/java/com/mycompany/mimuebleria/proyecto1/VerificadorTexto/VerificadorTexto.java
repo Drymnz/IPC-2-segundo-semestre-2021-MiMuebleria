@@ -32,7 +32,7 @@ public class VerificadorTexto {
         return verificador("[\"]?[A-Za-z0-9]+[\"]?", verificar);
     }
 
-    public boolean verificarDate(String verificar) {
+    public boolean verificarFecha(String verificar) {
         return verificador("[\"]?[0-9]{4}[^A-Za-z0-9][0|1]?[0-9][^A-Za-z0-9][0-3]?[0-9][\"]?", verificar);
     }
 

@@ -56,7 +56,7 @@ public class Ajustar {
                     Pieza modificarPieza = (Pieza) quien;
                     Pieza porCual = (Pieza) cual;
                     pk = String.valueOf(modificarPieza.getId());
-                    semodifica = "tipo='" + porCual.getTipo() + "',precio='" + porCual.getCosto()+"'";
+                    semodifica = "tipo='" + porCual.getTipo() + "',precio='" + porCual.getCosto() + "'";
                     break;
             }
             ingresar = conexion.prepareStatement("UPDATE " + donde.getNombre() + " SET " + semodifica + " where " + donde.getPk() + "=" + pk);
@@ -66,5 +66,28 @@ public class Ajustar {
             Logger.getLogger(Ajustar.class.getName()).log(Level.SEVERE, null, ex);
         }
         return eliminado;
+    }
+
+    public <T> boolean modificarALL(ListadoTabla donde, T quien, T cual) {
+        try {
+            String semodifica = "";
+            String quienes = "";
+            String columna = "";
+            switch (donde) {
+                case pieza:
+                    Pieza modificarPieza = (Pieza) quien;
+                    Pieza porCual = (Pieza) cual;
+                    quienes = modificarPieza.getTipo();
+                    columna = "tipo";
+                    semodifica = "tipo='" + porCual.getTipo() + "'";
+                    break;
+            }
+            ingresar = conexion.prepareStatement("UPDATE " + donde.getNombre() + " SET " + semodifica + " where " + columna + "='" + quienes + "'");
+        } catch (SQLException ex) {
+            System.out.println("modificarALL " + ex.getMessage());
+            Logger.getLogger(Ajustar.class.getName()).log(Level.SEVERE, null, ex);
+             return false;
+        }
+        return true;
     }
 }

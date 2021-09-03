@@ -26,8 +26,8 @@
                 request.setAttribute("editar", false);%>
             <jsp:include flush="true" page="../../includes/tabla.jsp"/>
             <%request.setAttribute("listado", listado);
-                request.setAttribute("nombreListado", "pieza");
-                request.setAttribute("editar", true);%>
+                request.setAttribute("editar", true);
+                request.setAttribute("nombreListado", "pieza");%>
             <jsp:include flush="true" page="../../includes/tabla.jsp"/>
         </section>
     </body>

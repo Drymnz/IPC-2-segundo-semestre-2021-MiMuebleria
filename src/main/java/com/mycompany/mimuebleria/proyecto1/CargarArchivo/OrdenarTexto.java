@@ -5,6 +5,8 @@
  */
 package com.mycompany.mimuebleria.proyecto1.CargarArchivo;
 
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
+
 /**
  *
  * @author drymnz
@@ -30,30 +32,34 @@ public class OrdenarTexto {
     private void ordenar() {
         int[] guia = new int[dividor.length];
         for (int i = 0; i < guia.length; i++) {
-            guia[i] = asignar(dividor[i]);
+            String[] ver = dividor[i].split("\\(");
+            guia[i] = asignar(ver[0]);
         }
-        dividor = ordenarRespectoInt(dividor, guia);
+        dividor = ordenarRespectoIntUsandoShell(dividor, guia);
     }
-
-    private String[] ordenarRespectoInt(String[] ordenar, int[] respecto) {
-        int selecion = 0;
-        int posicion = 0;
-        String mover = "";
-        for (int i = 0; i < ordenar.length; i++) {
-            selecion = respecto[i];
-            mover = ordenar[i];
-            posicion = i;
-            for (int j = i + 1; j < ordenar.length; j++) {
-                if (selecion > respecto[j]) {
-                    selecion = respecto[j];
-                    mover = ordenar[j];
-                    posicion = j;
+    // ordenamiento numerico respecto a un arreglo que ordenar, del menor al mayor
+    private String[] ordenarRespectoIntUsandoShell(String[] ordenar, int[] respecto) {
+        int salto = (ordenar.length) / 2;
+        int j, k;
+        while ((salto > 0)) {
+            for (int i = salto; i < ordenar.length; i++) {
+                j = i - salto;
+                while (j >= 0) {
+                    k = j + salto;
+                    if (respecto[j] <= respecto[k]) {
+                        j = -1;
+                    } else {
+                        int auxiliar = respecto[j];
+                        respecto[j] = respecto[k];
+                        respecto[k] = auxiliar;
+                        String cambiar = ordenar[j];
+                        ordenar[j] = ordenar[k];
+                        ordenar[k] = cambiar;
+                        j -= salto;
+                    }
                 }
             }
-            respecto[posicion] = respecto[i];
-            respecto[i] = selecion;
-            ordenar[posicion] = ordenar[i];
-            ordenar[i] = mover;
+            salto /= 2;
         }
         return ordenar;
     }
@@ -61,12 +67,26 @@ public class OrdenarTexto {
     // asigna una jerarquie para que carge de los primitido hasta lo complejo(post)
     private int asignar(String ver) {
         ver = ver.toUpperCase();
-        ListadoPalabrasClasvesCargarArchivo[] palabras = ListadoPalabrasClasvesCargarArchivo.values();
-        for (int i = 0; i < palabras.length; i++) {
-            if ((ver.indexOf(palabras[i].getNombre().toUpperCase()) == 0)) {
-                return palabras[i].getNumero();
+        ListadoTabla[] palabras = ListadoTabla.values();
+        int asignar = palabras.length;
+        for (ListadoTabla palabra : palabras) {
+            if (!palabra.getPalabraClaveCargaArchivo().isEmpty() && palabra.getPalabraClaveCargaArchivo().equalsIgnoreCase(ver)) {
+                switch (palabra) {
+                    case usuario:
+                        return 1;
+                    case pieza:
+                        return 2;
+                    case cliente:
+                        return 3;
+                    case mueble:
+                        return 4;
+                    case ensablePieza:
+                        return 5;
+                    case ensableMueble:
+                        return 6;
+                }
             }
         }
-        return palabras.length;
+        return asignar;
     }
 }

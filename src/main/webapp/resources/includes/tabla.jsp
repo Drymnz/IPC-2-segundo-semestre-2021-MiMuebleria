@@ -13,6 +13,13 @@
 <% boolean editar = (boolean) request.getAttribute("editar");%>
 <!DOCTYPE html>
 <div class="tablaUsuario">
+    <style>
+        .resaltar{
+            cursor : default;
+            background-color: yellow;
+            color:crimson;
+        }
+    </style>
     <h2 id="texto">Listado de ${nombreListado}</h2>
     <table class="table">
         <thead>
@@ -32,10 +39,17 @@
                         </c:when>
                         <c:when test="${nombreListado == 'resumen pieza'}">
                         <th scope="col">Tipo</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Modificacion</th>
                         </c:when>
                         <c:when test="${nombreListado == 'mueble'}">
                         <th scope="col">Nombre</th>
                         <th scope="col">Precio</th>
+                        </c:when>
+                        <c:when test="${nombreListado == 'ensable pieza'}">
+                        <th scope="col">Pieza</th>
+                        <th scope="col">Mueble</th>
+                        <th scope="col">Cantidad</th>
                         </c:when>
                     </c:choose>
             </tr>
@@ -62,6 +76,7 @@
                                   class="btn btn-lg btn-block btn-outline-primary">
                         Editar
                     </a>
+                </td>
                 <td><a href="${pageContext.request.contextPath}/Modificar?accion=eliminar-pieza&modificar=<%=imprimir.getId()%>&donde=ConexionJSP?accion=listadoPiezaYlistado-resumen&donde=/resources/jsp/sub-fabrica/listado-piezas.jsp" 
                        class="btn btn-lg btn-block btn-outline-primary">
                         eliminar
@@ -69,12 +84,27 @@
                 </td>
                 <% } else {%>
                 <td ><%=imprimir.getTipo()%></td>
+                <td ><%=imprimir.getCosto()%></td>
+                <td cope="row"><a href="${pageContext.request.contextPath}/Modificar?accion=ventana-all&modificar=<%=imprimir.getTipo()%>&all=true&donde=resources/jsp/sub-fabrica/modificar-pieza.jsp" 
+                                  class="btn btn-lg btn-block btn-outline-primary">
+                        Editar
+                    </a>
+                </td>
                 <%}%>
                 <%}%>
                 <%if (object instanceof Mueble) {
                         Mueble imprimir = (Mueble) object;%>
                 <td cope="row"><%=imprimir.getNombre()%></td>
                 <td ><%=imprimir.getPrecio()%></td>
+                <%}%>
+                <%if (object instanceof EnsablePiezas) {
+                        EnsablePiezas imprimir = (EnsablePiezas) object;
+                        Pieza imprimierPieza = (Pieza) imprimir.getPieza();
+                        Mueble imprimierMeuble = (Mueble) imprimir.getMueble();
+                %>
+                <td cope="row"><%=imprimierPieza.getTipo()%></td>
+                <td ><%=imprimierMeuble.getNombre()%></td>
+                <td ><%=imprimir.getCantidadPiezas()%></td>
                 <%}%>
             </tr>
             <%}
@@ -83,4 +113,8 @@
             </tr>
         </tbody>
     </table>
+    <c:if test="${editar}">
+        <!--         <script src="${pageContext.request.contextPath}/resources/js/jquery-3.6.0.min.js" type="text/javascript"></script> --> 
+        <!--         <script src="${pageContext.request.contextPath}/resources/js/ordenar-tabla.js" type="text/javascript"></script>-->
+    </c:if>
 </div>

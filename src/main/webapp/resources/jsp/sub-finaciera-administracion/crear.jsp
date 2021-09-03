@@ -28,7 +28,7 @@
                 <div class="col-sm-9">
                     <div class="row">
                         <div class="col-8 col-sm-6">
-                            <form method="POST" class="mb-3 row" action="../CrearObjetosP?accion=usuario">
+                            <form method="POST" class="mb-3 row" action="${pageContext.request.contextPath}/resources/jsp/CrearObjetosP?accion=usuario">
                                 <h2>Crear usuario</h2>
                                 <label for="Usuario">Usuario</label>
                                 <input name="nombre" type="text" class="form-control"  placeholder="&#128100" >
@@ -44,7 +44,7 @@
                             </form> 
                         </div>
                         <div class="col-8 col-sm-6">
-                            <form method="POST" class="mb-3 row" action="../CrearObjetosP?accion=mueble">
+                            <form method="POST" class="mb-3 row" action="${pageContext.request.contextPath}/resources/jsp/CrearObjetosP?accion=mueble">
                                 <h2>Crear mueble</h2>
                                 <label for="nombre">nombre</label>
                                 <input name="mueble" type="text" class="form-control">
@@ -54,24 +54,24 @@
                             </form> 
                         </div>
                         <div class="col-8 col-sm-6">
-                            <form method="POST" class="mb-3 row" action="../CrearObjetosP?accion=mueble">
+                            <form method="POST" class="mb-3 row" action="${pageContext.request.contextPath}/resources/jsp/CrearObjetosP?ensamble=pieza">
                                 <h2>Crear ensable piezas</h2>
                                 <label for="nombre">mueble</label>
                                 <select name="tipo-mueble" class="custom-select d-block w-100" id="operation" required>
-                                    <% for (String string : listado) {
+                                    <% if (listado != null){ for (String string : listado) {
                                             out.println("<option value=\"" + string + "\">" + string + "</option>");
-                                        }
+                                        }}
                                     %>
                                 </select>
                                 <label for="nombre">pieza</label>
                                 <select name="tipo-pieza" class="custom-select d-block w-100" id="operation" required>
-                                    <% for (String string : listadoresumen) {
+                                    <% if(listadoresumen != null){ for (String string : listadoresumen) {
                                             out.println("<option value=\"" + string + "\">" + string + "</option>");
-                                        }
+                                    }}
                                     %>
                                 </select>
                                 <label for="precio">cantidad</label>
-                                <input name="cantidad-piezas" type="number" class="form-control" ">
+                                <input name="cantidad-piezas" type="number" min="1"  class="form-control" ">
                                 <input type="submit"  class="btn btn-primary" value="crear">
                             </form> 
                         </div>

@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% Object ajustar = (Object) request.getAttribute("modificar");%>
+<% boolean activar = (boolean) request.getAttribute("all");%>
 <!DOCTYPE html>
 <html>
     <head>

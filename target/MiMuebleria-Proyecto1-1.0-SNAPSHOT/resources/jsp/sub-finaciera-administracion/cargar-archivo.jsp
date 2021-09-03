@@ -17,7 +17,12 @@
     <body>
         <jsp:include page="../../includes/menu-finaciera-administracion.jsp"/>
         <div class="contenido">
-            Estas en la creacion de cargar
+            <form method="POST" action="../../../ManejadorArchivo" enctype="multipart/form-data">
+                <label for="datafile">Seleccione un archivo</label>
+                <input type="file" name="datafile">
+                <br>
+                <button type="submit">Subir</button>
+            </form>
         </div>
         <script src="../../js/sidebars.js" type="text/javascript"></script>
         <script src="../../js/bootstrap.bundle.min.js" type="text/javascript"></script>

@@ -39,21 +39,21 @@ public class CrearObjetosP extends HttpServlet {
         ManejadorConexionMYQSL coneccion = new ManejadorConexionMYQSL(true);
         try {
             String realizar = request.getParameter("accion");
-            if (!realizar.trim().equalsIgnoreCase("")) {
+            if (!realizar.isEmpty()) {
                 BuscadorExistencialPK buscador = new BuscadorExistencialPK(coneccion.getConexion());
                 boolean loRealizo = false;
                 switch (realizar) {
                     case "usuario":
                         loRealizo = crearUsuario(request, response, coneccion.getConexion(), buscador);
-                        response.sendRedirect("sub-finaciera-administracion/crear.jsp");
+                        response.sendRedirect("../../ConexionJSP?accion=listadoUsuario&donde=resources/jsp/sub-finaciera-administracion/listado-usuarios.jsp");
                         break;
                     case "mueble":
                         loRealizo = crearMueble(request, response, coneccion.getConexion(), buscador);
-                        response.sendRedirect("sub-finaciera-administracion/crear.jsp");
+                        response.sendRedirect("../../ConexionJSP?accion=listadoMueble&donde=resources/jsp/sub-finaciera-administracion/listado-mueble.jsp");
                         break;
                     case "pieza":
                         loRealizo = crearPieza(request, response, coneccion.getConexion(), buscador);
-                        response.sendRedirect("sub-fabrica/pieza.jsp");
+                        response.sendRedirect("../../ConexionJSP?accion=listadoPiezaYlistado-resumen&donde=/resources/jsp/sub-fabrica/listado-piezas.jsp");
                         break;
                 }
             }

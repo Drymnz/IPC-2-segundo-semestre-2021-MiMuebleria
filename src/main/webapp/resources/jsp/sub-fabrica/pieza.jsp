@@ -9,25 +9,35 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-
+        <title>Crear Pieza</title>
+        <jsp:include flush="true" page="../../../resources/includes/recursos-bootstrap.jsp" />
     </head>
     <body>
-        <div class="menu-sub-finaza">
+        <main>
             <jsp:include page="../../includes/menu-fabrica.jsp" flush="true"/>
-        </div>
-        <div class="col-8 col-sm-6">
-            <form method="POST" class="mb-3 row" action="${pageContext.request.contextPath}/resources/jsp/CrearObjetosP?accion=pieza">
-                <h2>Crear pieza</h2>
-                <label for="Cantidad">Cantidad</label>
-                <input type="number" name="cantidad" min="1"/>
-                <label for="Tipo">Tipo</label>
-                <input name="tipo" type="text" class="form-control"  >
-                <label for="Precio">Precio</label>
-                <input name="precio" type="text" class="form-control">
-                <input type="submit" id="boton-enviar"  class="btn btn-primary" value="crear">
-            </form> 
-        </div>
+            <div class="b-example-divider"></div> 
+            <div class="col-6 col-sm-4">
+                <form method="POST" class="mb-3" action="${pageContext.request.contextPath}/resources/jsp/CrearObjetosP?accion=pieza">
+                    <h2>Crear pieza</h2>
+                    <div class="mb-3">
+                        <label for="Cantidad">Cantidad : </label>
+                        <input type="number" name="cantidad" min="1"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Tipo">Tipo</label>
+                        <input name="tipo" type="text" class="form-control"  >
+                    </div>
+                    <div class="mb-3">
+                        <label for="Precio">Precio</label>
+                        <input name="precio" type="text" class="form-control">
+                    </div>
+                    <div class="mb-3 container-xxl themed-container">
+                        <input type="submit" id="boton-enviar"  class="btn btn-primary" value="crear">
+                    </div>
+                </form> 
+            </div>
+        </main>
+        <jsp:include flush="true" page="../../../resources/includes/recursos-js.jsp" />
     </body>
     <script>
         function activar() {

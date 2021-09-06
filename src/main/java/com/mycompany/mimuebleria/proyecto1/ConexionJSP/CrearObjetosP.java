@@ -90,7 +90,7 @@ public class CrearObjetosP extends HttpServlet {
 
     private boolean crearMueble(HttpServletRequest request, HttpServletResponse response, Connection conexion, BuscadorExistencialPK buscador) {
         boolean creado = false;
-        String tipo = request.getParameter("mueble");
+        String tipo = request.getParameter("mueble").toUpperCase();
         String precio = request.getParameter("precio");
         if (!(buscador).tablaPKVarchar(tipo, ListadoTabla.mueble) && buscador.getEncontrado() == null & (!tipo.trim().equals("") && !precio.trim().equals(""))) {
             float precioMueble = -1;
@@ -108,7 +108,7 @@ public class CrearObjetosP extends HttpServlet {
 
     private boolean crearPieza(HttpServletRequest request, HttpServletResponse response, Connection conexion, BuscadorExistencialPK buscador) {
         boolean creado = false;
-        String tipo = request.getParameter("tipo");
+        String tipo = request.getParameter("tipo").toUpperCase();
         String precio = request.getParameter("precio");
         String cantidad = request.getParameter("cantidad");
         float precioPieza = -1;

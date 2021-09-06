@@ -12,55 +12,51 @@
 <%@page import="com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% Usuario usuario = (Usuario) request.getAttribute("usuario");
-    List<Object> listado = (List<Object>) request.getAttribute("listado");
-    List<String> listadoMuebles = new ArrayList<String>();
+    List<String> listado = (List<String>) request.getAttribute("listado");
 %>
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Ensable mueble</title>
+        <jsp:include flush="true" page="../../../resources/includes/recursos-bootstrap.jsp" />
     </head>
     <body>
-        <header>
+        <main>
             <jsp:include page="../../includes/menu-fabrica.jsp" flush="true"/>
-        </header>
-        <h2><%= usuario.getNombre()%></h2>
-        <header>
-            <form method="POST" class="mb-3 row" action="${pageContext.request.contextPath}/resources/jsp/CrearObjetosP?ensamble=pieza">
-                <h2>Crear ensable mueble</h2>
-                <label for="nombre">¿Que mueble desea ensamblar?</label>
-                <label for="nombre">post: solo sale los que se pueden por la cantidad de piezas</label>
-                <select name="tipo-pieza" class="custom-select d-block w-100" id="operation" required >
-                    <% if (listado != null) {
-                            for (Object object : listado) {
-                                EnsablePiezas informacion = (EnsablePiezas) object;
-                                if (listadoMuebles.isEmpty()) {
-                                    listadoMuebles.add(informacion.getMueble().getNombre());
-                                    out.println("<option value=\"" + informacion.getMueble().getNombre() + "\">" + informacion.getMueble().getNombre() + "</option>");
-                                } else {
-                                    String añadirString = "";
-                                    boolean añadir = false;
-                                    for (String listadoMueble : listadoMuebles) {
-                                        añadir = ((listadoMueble.equalsIgnoreCase(informacion.getMueble().getNombre()))) ? false : true;
-                                        añadirString = (añadir) ? (informacion.getMueble().getNombre()) : "";
-                                    }
-                                    if (!añadirString.isEmpty()) {
-                                        listadoMuebles.add(añadirString);
-                                        out.println("<option value=\"" + añadirString + "\">" + añadirString + "</option>");
-                                    }
-                                }
-                            }
-                        }
-                    %>
-                </select>
-                <%if (true) {
-                    
-                    }
-                %>
-                <input type="submit"  class="btn btn-primary" value="crear">
-            </form> 
-        </header>
+            <div class="b-example-divider"></div> 
+            <div class="d-flex row col-md-8 themed-grid-col">
+                <div class="mb-3">
+                    <c:if test="${usuario!=null}">
+                        <h2> Usuario logiado : <%= usuario.getNombre()%></h2>
+                        <label for="nombre">¿Que mueble desea ensamblar?</label>
+                        <header>
+                            <c:if test="${listado != null}">
+                                <%
+                                    for (String string : listado) {%>
+                                <div>
+                                    <form method="POST" class="mb-3 row" action="${pageContext.request.contextPath}/CrearEnsable?ensamble=mueble">
+                                        <div class="mb-3">
+                                            <%
+                                                String[] enviar = string.split("\\)");
+                                            %>
+                                            <p> <%=enviar[1]%></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="hidden" name="tipo-mueble" value="<%=enviar[0]%>"/>
+                                            <input type="hidden" name="usuario" value="${usuario.getNombre()}"/>
+                                            <input type="submit"  class="btn btn-primary" value="crear">
+                                        </div>
+                                    </form> 
+                                </div>     
+                                <%}%>
+                            </c:if>
+                        </c:if>
+                    </header>   
+                </div>
+            </div>
+        </main>
+        <jsp:include flush="true" page="../../../resources/includes/recursos-js.jsp" />
     </body>
 </html>

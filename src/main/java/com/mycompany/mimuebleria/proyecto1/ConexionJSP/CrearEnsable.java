@@ -5,12 +5,21 @@
  */
 package com.mycompany.mimuebleria.proyecto1.ConexionJSP;
 
+import com.mycompany.mimuebleria.proyecto1.Objetos.EnsablePiezas;
+import com.mycompany.mimuebleria.proyecto1.Objetos.SalaVenta;
 import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.*;
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Cargar.Ajustar;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Cargar.CargarEnsable;
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Cargar.CargarObjetosTienda;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.BuscadorExistencialPK;
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.ConsultaTablasEspecifica;
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Consulta.ListadoFilasTabla;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ManejadorConexionMYQSL;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -56,17 +65,65 @@ public class CrearEnsable extends HttpServlet {
             boolean cargo = false;
             switch (accion) {
                 case "pieza":
-                    buscador.tablaPKVarchar(request.getParameter("tipo-pieza"), ListadoTabla.pieza);
-                    if (true) {
+                    if (buscador.tablaPKVarchar(request.getParameter("tipo-pieza"), ListadoTabla.pieza)) {
                         Pieza piezasEnsblePieza = (Pieza) buscador.getEncontrado();
                         buscador.tablaPKVarchar(request.getParameter("tipo-mueble"), ListadoTabla.mueble);
                         Mueble muebleArmar = (Mueble) buscador.getEncontrado();
                         try {
                             int cantidad = Integer.parseInt(request.getParameter("cantidad-piezas"));
                             cargo = (new CargarEnsable(coneccion.getConexion())).cargarEnsablePiezas(piezasEnsblePieza, muebleArmar, cantidad);
-                            response.sendRedirect("ConexionJSP?accion=listado-una-columna-menu-crear-finaciero&donde=resources/jsp/sub-finaciera-administracion/crear.jsp");
+                            response.sendRedirect("ConexionJSP?accion=listadoEnsablePieza&donde=resources/jsp/sub-finaciera-administracion/listado-ensable-pieza.jsp");
                         } catch (NumberFormatException e) {
                             System.out.println(e.getMessage());
+                        }
+                    }
+                    break;
+                case "mueble":
+                    String mueble = request.getParameter("tipo-mueble").replaceAll("\\(", "");
+                    if (buscador.tablaPKVarchar(mueble, ListadoTabla.mueble)) {
+                        Mueble encontrado = (Mueble) buscador.getEncontrado();
+                        if (buscador.tablaPKVarchar(request.getParameter("usuario"), ListadoTabla.usuario)) {
+                            boolean todoBien = false;
+                            Usuario ensablador = (Usuario) buscador.getEncontrado();
+                            List<Pieza> piezasUsadas = new ArrayList<>();
+                            List<Pieza> piezasDisponibles = new ListadoFilasTabla(coneccion.getConexion()).getTablaDB(ListadoTabla.pieza);
+                            List<EnsablePiezas> listadoEnsables = (new ConsultaTablasEspecifica(coneccion.getConexion())).muebleEnsablePiezaExiste(encontrado, (new ListadoFilasTabla(coneccion.getConexion()).getTablaDB(ListadoTabla.ensablePieza)));
+                            for (EnsablePiezas listadoEnsable : listadoEnsables) {
+                                try {
+                                    for (int i = 0; i < listadoEnsable.getCantidadPiezas(); i++) {
+                                        boolean seguir = true;
+                                        int j = 0;
+                                        while (seguir) {
+                                            Pieza revisar = piezasDisponibles.get(j);
+                                            if (revisar.getTipo().equals(listadoEnsable.getPieza().getTipo())) {
+                                                piezasUsadas.add(revisar);
+                                                piezasDisponibles.remove(revisar);
+                                                seguir = false;
+                                            }
+                                            j++;
+                                        }
+                                    }
+                                    todoBien = true;
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            if (todoBien) {
+
+                                request.setAttribute("mueble", encontrado);
+                                if (new CargarEnsable(coneccion.getConexion()).cargarEnsableMueble(encontrado, ensablador, LocalDate.now())) {
+                                    int precioTotal = 0;
+                                    for (Pieza piezasUsada : piezasUsadas) {
+                                        precioTotal+= piezasUsada.getCosto();
+                                        (new Ajustar(coneccion.getConexion())).eliminarPK(ListadoTabla.pieza, piezasUsada);
+                                    }
+                                    (new CargarObjetosTienda(coneccion.getConexion())).cargarSalaVenta(new SalaVenta(mueble, precioTotal));
+                                }
+                                request.setAttribute("listado", piezasUsadas);
+                                response.sendRedirect("/resources/jsp/sub-fabrica/resultado-mueble-ensablado.jsp");
+                            } else {
+                                response.sendRedirect("index.jsp");
+                            }
                         }
                     }
                     break;

@@ -31,12 +31,11 @@ public class BuscadorExistencialPK<T> {
 
     //fin constructor
     public boolean tablaPKVarchar(String nombre, ListadoTabla verificar) {
-        String columna = "";
+        String columna = verificar.getPk();
         try {
             switch (verificar) {
                 case usuario:
                     buscar = conexion.prepareStatement("select * from usuario WHERE nombre=?");
-                    columna = "nombre";
                     break;
                 case pieza:
                     buscar = conexion.prepareStatement("select * from pieza WHERE tipo=?");
@@ -44,7 +43,6 @@ public class BuscadorExistencialPK<T> {
                     break;
                 case mueble:
                     buscar = conexion.prepareStatement("select * from mueble WHERE nombre=?");
-                    columna = "nombre";
                     break;
             }
             buscar.setString(1, nombre);
@@ -65,25 +63,21 @@ public class BuscadorExistencialPK<T> {
 
     public boolean tablaPKInt(int numero, ListadoTabla verificar) {
         try {
-            String columna = "";
             switch (verificar) {
                 case pieza:
                     buscar = conexion.prepareStatement("select * from pieza WHERE id=?");
-                    columna = "id";
                     break;
                 case cliente:
                     buscar = conexion.prepareStatement("select * from cliente WHERE id=?");
-                    columna = "id";
                     break;
                 case factura:
                     buscar = conexion.prepareStatement("select * from factura WHERE codigo=?");
-                    columna = "codigo";
                     break;
             }
             buscar.setInt(1, numero);
             resultado = buscar.executeQuery();
             resultado.next();
-            if (resultado.getInt(columna) == numero) {
+            if (resultado.getInt(verificar.getPk()) == numero) {
                 encontro(verificar, this.resultado);
                 return true;
             }

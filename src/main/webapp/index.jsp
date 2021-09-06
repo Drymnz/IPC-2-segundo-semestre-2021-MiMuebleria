@@ -11,9 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>login</title>
         <link rel="icon" type="imagen/x-icon" href="resources/picture/logoIcon.icon">
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <!-- hojas de estilo -->
-        <link href="resources/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <jsp:include flush="true" page="resources/includes/recursos-bootstrap.jsp" />
         <link href="resources/css/Style-login.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>

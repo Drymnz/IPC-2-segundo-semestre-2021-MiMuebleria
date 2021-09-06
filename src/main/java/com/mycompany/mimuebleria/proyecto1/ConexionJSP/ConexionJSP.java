@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import static com.mycompany.mimuebleria.proyecto1.CLASSPRUEVAS.conexionMysql;
+import com.mycompany.mimuebleria.proyecto1.ConstruccionLibro.Libro;
 
 /**
  *
@@ -82,7 +83,7 @@ public class ConexionJSP extends HttpServlet {
                         break;
                     case "listadoDisponiblesEnsablarMueble":
                         // listado de ensables disponibles
-                        ListadoCompleto = (new ConsultaTablasEspecifica(conexionMysql.getConexion())).getListadoDisponiblesConstruccionEnsableMueble();
+                        ListadoCompleto = (new Libro().listaLibro((new ConsultaTablasEspecifica(conexionMysql.getConexion())).getListadoDisponiblesConstruccionEnsableMueble()));
                         request.setAttribute("usuario", logiado);
                         accion = "ensables disponibles";
                         break;

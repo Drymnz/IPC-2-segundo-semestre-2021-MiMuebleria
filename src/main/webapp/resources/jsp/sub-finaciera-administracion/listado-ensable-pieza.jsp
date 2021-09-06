@@ -13,19 +13,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Listado ensable piezas</title>
+        <jsp:include flush="true" page="../../../resources/includes/recursos-bootstrap.jsp" />
     </head>
-    <header>
-        <div class="col-sm-9">
-            <jsp:include page="../../includes/menu-finaciera-administracion.jsp" flush="true"/>
-        </div>
-    </header>
     <body>
-        <section>
-            <%request.setAttribute("listado", listado);
-                request.setAttribute("nombreListado", "ensable pieza");
-                request.setAttribute("editar", false);%>
-            <jsp:include flush="true" page="../../includes/tabla.jsp"/>
-        </section>
+        <main>
+            <jsp:include page="../../includes/menu-finaciera-administracion.jsp" flush="true"/>
+            <div class="b-example-divider"></div> 
+            <section>
+                <%request.setAttribute("listado", listado);
+                    request.setAttribute("nombreListado", "ensable pieza");
+                    request.setAttribute("editar", false);%>
+                <jsp:include flush="true" page="../../includes/tabla.jsp"/>
+            </section>
+
+        </main>
     </body>
+    <jsp:include flush="true" page="../../../resources/includes/recursos-js.jsp" />
 </html>

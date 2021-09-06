@@ -6,8 +6,9 @@
 package com.mycompany.mimuebleria.proyecto1.ConexionJSP;
 
 import com.mycompany.mimuebleria.proyecto1.CargarArchivo.CargadorMasivoTextoPlano;
-import static com.mysql.cj.conf.PropertyKey.PATH;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -52,24 +53,42 @@ public class ManejadorArchivo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Part filePart = request.getPart("datafile");
-        String fileName = filePart.getName();
+        ArrayList<String> noCargoBase = new ArrayList<>();
+        /*Part filePart = request.getPart("datafile");
         InputStream fileStream = filePart.getInputStream();
-        List noCargoBase = new ArrayList<String>();
-
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(fileStream))) {
-            String line = in.readLine();
-            while (line != null) {
-                String[] noCargo = (new CargadorMasivoTextoPlano(line)).getNoCargo();
+        List noCargoBase = new ArrayList<String>();*/
+        String linea;
+        String texto = "";
+        File Archivo_Cargar = (File) request.getPart("datafile");
+        try {
+            FileInputStream Archivo = new FileInputStream(Archivo_Cargar);
+            InputStreamReader leer = new InputStreamReader(Archivo);
+            BufferedReader Almacenar = new BufferedReader(leer);
+            while ((linea = Almacenar.readLine()) != null) {
+                texto += linea + "\n";
+            }
+            String[] noCargo = (new CargadorMasivoTextoPlano(texto)).getNoCargo();
                 for (String string : noCargo) {
                     if (string != null && !string.isEmpty()) {
                         noCargoBase.add(string);
                     }
                 }
-                line = in.readLine();
-            }
-        } catch (Exception ex) {
-            // no pudo leer el archivo
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+        /* try (BufferedReader in = new BufferedReader(new InputStreamReader(fileStream))) {
+        String line = in.readLine();
+        while (line != null) {
+        String[] noCargo = (new CargadorMasivoTextoPlano(line)).getNoCargo();
+        for (String string : noCargo) {
+        if (string != null && !string.isEmpty()) {
+        noCargoBase.add(string);
+        }
+        }
+        line = in.readLine();
+        }
+        } catch (Exception ex) {
+        // no pudo leer el archivo
+        }*/
     }
 }

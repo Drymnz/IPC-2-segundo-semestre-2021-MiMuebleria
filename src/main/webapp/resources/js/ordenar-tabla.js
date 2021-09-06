@@ -4,8 +4,8 @@
  * and open the template in the editor.
  * 
  */
-
 $(document).ready(() => {
+
     //funcion para indicar sobre que esta, reslatador
     $('th').each(function (columna) {
         $(this).hover(function () {
@@ -13,18 +13,32 @@ $(document).ready(() => {
         }, function () {
             $(this).removeClass('resaltar');
         });
+        contador = 0;
         // ordenar la tabla por columnas, funciones anonimas
         $(this).click(function () {
             let registros = $('table').find('tbody > tr').get();
             // ordenar los registros
-            registros.sort(function (a, b) {
-                let valor1 = $(a).children('td').eq(columna).text().toUpperCase();
-                let valor2 = $(b).children('td').eq(columna).text().toUpperCase();
-                return (valor1 < valor2) ? -1 : (valor1 > valor2) ? 1 : 0;
-            });
-            $.each(registros, function (indice, elemento) {
-                $('tbody').append(elemento);
-            });
+            if (contador == 0) {
+                registros.sort(function (a, b) {
+                    let valor1 = $(a).children('td').eq(columna).text().toUpperCase();
+                    let valor2 = $(b).children('td').eq(columna).text().toUpperCase();
+                    return (valor1 < valor2) ? -1 : (valor1 > valor2) ? 1 : 0;
+                });
+                contador = 1;
+                $.each(registros, function (indice, elemento) {
+                    $('tbody').append(elemento);
+                });
+            } else {
+                registros.sort(function (a, b) {
+                    let valor1 = $(a).children('td').eq(columna).text().toUpperCase();
+                    let valor2 = $(b).children('td').eq(columna).text().toUpperCase();
+                    return (valor1 > valor2) ? -1 : (valor1 < valor2) ? 1 : 0;
+                });
+                $.each(registros, function (indice, elemento) {
+                    $('tbody').append(elemento);
+                });
+                contador = 0;
+            }
         });
     });
 });

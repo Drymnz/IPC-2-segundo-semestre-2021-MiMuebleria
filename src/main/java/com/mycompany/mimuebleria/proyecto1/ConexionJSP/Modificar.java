@@ -39,7 +39,7 @@ public class Modificar extends HttpServlet {
         String accion = request.getParameter("accion");
         if (!accion.isEmpty()) {
             ManejadorConexionMYQSL coneccion = new ManejadorConexionMYQSL(true);
-            BuscadorExistencialPK lo = new BuscadorExistencialPK(coneccion.getConexion());
+            BuscadorExistencialPK buscador = new BuscadorExistencialPK(coneccion.getConexion());
             Ajustar relizar = new Ajustar(coneccion.getConexion());
             boolean fueRealizado = false;
             switch (accion) {
@@ -53,8 +53,8 @@ public class Modificar extends HttpServlet {
                     break;
                 case "ventana":
                     String idPiezaModificar = request.getParameter("modificar");
-                    if (lo.tablaPKInt(Integer.parseInt(idPiezaModificar), ListadoTabla.pieza)) {
-                        Pieza mandar = (Pieza) lo.getEncontrado();
+                    if (buscador.tablaPKInt(Integer.parseInt(idPiezaModificar), ListadoTabla.pieza)) {
+                        Pieza mandar = (Pieza) buscador.getEncontrado();
                         request.setAttribute("modificar", mandar);
                         request.setAttribute("all", false);
                         request.getRequestDispatcher(request.getParameter("donde")).forward(request, response);
@@ -62,8 +62,8 @@ public class Modificar extends HttpServlet {
                     break;
                 case "eliminar-pieza":
                     String idPieza = request.getParameter("modificar");
-                    if (lo.tablaPKInt(Integer.parseInt(idPieza), ListadoTabla.pieza)) {
-                        Pieza mandar = (Pieza) lo.getEncontrado();
+                    if (buscador.tablaPKInt(Integer.parseInt(idPieza), ListadoTabla.pieza)) {
+                        Pieza mandar = (Pieza) buscador.getEncontrado();
                         fueRealizado = relizar.eliminarPK(ListadoTabla.pieza, mandar);
                         request.getRequestDispatcher(request.getParameter("donde")).forward(request, response);
                     }

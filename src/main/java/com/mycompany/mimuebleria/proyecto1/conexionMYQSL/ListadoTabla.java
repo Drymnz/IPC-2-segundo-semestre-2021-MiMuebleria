@@ -10,13 +10,13 @@ package com.mycompany.mimuebleria.proyecto1.conexionMYQSL;
  * @author drymnz
  */
 public enum ListadoTabla {
-
-    cliente("cliente", "", "CLIENTE"),
+    factura("factura", "", ""),
+    salaVenta("salaVenta", "id", ""),
     detallesFactura("detallesFactura", "", ""),
+    cliente("cliente", "", "CLIENTE"),
     devolucion("devolucion", "", ""),
     ensableMueble("ensablaMueble", "", "ENSAMBLAR_MUEBLE"),
     ensablePieza("ensablepieza", "", "ENSAMBLE_PIEZAS"),
-    factura("factura", "", ""),
     mueble("mueble", "nombre", "MUEBLE"),
     pieza("pieza", "id", "PIEZA"),
     usuario("usuario", "nombre", "USUARIO");

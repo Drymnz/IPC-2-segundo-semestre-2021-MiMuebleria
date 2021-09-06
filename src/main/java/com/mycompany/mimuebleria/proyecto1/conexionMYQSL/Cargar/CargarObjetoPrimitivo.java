@@ -6,6 +6,7 @@
 package com.mycompany.mimuebleria.proyecto1.conexionMYQSL.Cargar;
 
 import com.mycompany.mimuebleria.proyecto1.Objetos.primitivos.*;
+import com.mycompany.mimuebleria.proyecto1.conexionMYQSL.ListadoTabla;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,22 +17,24 @@ import java.util.logging.Logger;
  *
  * @author drymnz
  */
-public class CargarObjetoPrimitivo implements Runnable {
+public class CargarObjetoPrimitivo extends CargadorMYQSL implements Runnable {
 
-    private Connection conexion;
-    private PreparedStatement ingresar;
-    private int cantidada;
+    private int cantidad;
     private Pieza cargarPiezas;
 
     // constructor 
-    public CargarObjetoPrimitivo(Connection coneccion, int cantidada, Pieza cargarPiezas) {
-        this.conexion = coneccion;
-        this.cantidada = cantidada;
-        this.cargarPiezas = cargarPiezas;
+    public CargarObjetoPrimitivo(Connection conexion, PreparedStatement ingresar) {
+        super(conexion, ingresar);
     }
 
-    public CargarObjetoPrimitivo(Connection coneccion) {
-        this.conexion = coneccion;
+    public CargarObjetoPrimitivo(Connection conexion) {
+        super(conexion);
+    }
+
+    public CargarObjetoPrimitivo(Connection conexion, int cantidadColocar, Pieza nuevo) {
+        this(conexion);
+        this.cargarPiezas = nuevo;
+        this.cantidad = cantidadColocar;
     }
 
     // fin constructor 
@@ -39,7 +42,7 @@ public class CargarObjetoPrimitivo implements Runnable {
     public <T> boolean cargar(T cargar) {
         boolean funciono = false;
         try {
-            switch ((cargar instanceof Mueble) ? 1 : (cargar instanceof Pieza) ? 2 : (cargar instanceof Usuario) ? 3 : 4) {
+            switch ((cargar instanceof Mueble) ? 1 : (cargar instanceof Pieza) ? 2 : (cargar instanceof Usuario) ? 3 : (cargar instanceof Cliente) ? 4 : 5) {
                 case 1:
                     Mueble cargarMueble = (Mueble) cargar;
                     funciono = ingresarMueble(cargarMueble);
@@ -51,6 +54,10 @@ public class CargarObjetoPrimitivo implements Runnable {
                 case 3:
                     Usuario cargarUsuario = (Usuario) cargar;
                     funciono = ingresarUsuario(cargarUsuario);
+                    break;
+                case 4:
+                    Cliente cargarCliente = (Cliente) cargar;
+                    funciono = ingresarCliente(cargarCliente);
                     break;
             }
         } catch (SQLException e) {
@@ -84,15 +91,26 @@ public class CargarObjetoPrimitivo implements Runnable {
         return ingresar.executeUpdate() == 1;
     }
 
+    private boolean ingresarCliente(Cliente cargar) throws SQLException{
+        ingresar = conexion.prepareStatement("INSERT INTO "+ListadoTabla.cliente.getNombre()+"  VALUES (?,?,?,?,?)");
+        ingresar.setInt(1, cargar.getId());
+        ingresar.setString(2, cargar.getNIT());
+        ingresar.setString(3, cargar.getNombre());
+        ingresar.setString(4, cargar.getMunicipio());
+        ingresar.setString(5, cargar.getDepartamento());
+        return ingresar.executeUpdate() == 1;
+    }
+
     @Override
     public void run() {
         try {
-            for (int i = 0; i < cantidada; i++) {
+            for (int i = 0; i < cantidad; i++) {
                 boolean funciona = ingresarPieza(this.cargarPiezas);
             }
         } catch (SQLException ex) {
-            System.out.println("ingresar datos"+ex.getMessage());
+            System.out.println("ingresar datos" + ex.getMessage());
             Logger.getLogger(CargarObjetoPrimitivo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }
